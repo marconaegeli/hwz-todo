@@ -269,12 +269,19 @@
     @apply min-h-dvh bg-background font-sans text-foreground antialiased;
     position: relative;
     isolation: isolate;
+    /* Bild-Hintergrund, verdunkelt, hinter dem animierten Mesh (body::before) */
+    background-image:
+      linear-gradient(rgb(0 0 0 / 0.65), rgb(0 0 0 / 0.65)),
+      url('./assets/hintergrund.png');
+    background-size: cover, cover;
+    background-position: center, center;
+    background-attachment: fixed, fixed;
   }
   h1, h2, h3 {
     @apply font-heading;
   }
 
-  /* Animierter Mesh-Hintergrund (reines CSS) */
+  /* Animierter Mesh-Hintergrund (reines CSS), liegt über dem Bild */
   body::before {
     content: '';
     position: fixed;

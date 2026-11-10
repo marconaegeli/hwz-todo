@@ -241,6 +241,8 @@ export function readConfettiColors(): string[] {
 
 Diese Blöcke stehen einmal in `src/index.css` und gelten für alle Looks: Theme-Zuordnung, Schriften, Bewegung, Hintergrund-Animation, Fokus, reduzierte Bewegung und die eigenen Klassen (`glass`, `glow`, `text-gradient`, `bg-gradient-hero`, `transition-look`). Der vollständige Inhalt steht in docs/STACK.md unter `src/index.css`.
 
+**Bild-Hintergrund:** Auf `body` liegt ein Foto (`src/assets/hintergrund.png`) als `background-image`, mit einer dunklen Ebene darüber (`rgb(0 0 0 / 0.65)`) für den Kontrast, `cover` und `fixed`. Dahinter bleibt die unveränderte `bg-background`-Fläche als Fallback. Über dem Foto liegt der animierte Mesh (`body::before`), darüber die Neon-Scanlines (`body::after`). Der Bildpfad ist relativ (Vite löst ihn mit `base` auf), kein führender Schrägstrich.
+
 ## Kontrast-Prüfung
 
 Gerechnet nach WCAG 2.2 (relative Leuchtdichte). Halbtransparente Flächen sind auf die hellste Stelle des Hintergrund-Verlaufs gemischt gerechnet (schlechtester Fall). Ziel: mindestens 4.5:1.
