@@ -5,6 +5,7 @@ import { Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { celebrate } from '@/lib/celebrate'
+import { PersonSelect } from './PersonSelect'
 import type { Task } from '../model'
 
 export function TaskCard({
@@ -12,11 +13,13 @@ export function TaskCard({
   onToggle,
   onRemove,
   onRestore,
+  onAssign,
 }: {
   task: Task
   onToggle: (id: string) => void
   onRemove: (task: Task) => void
   onRestore: () => void
+  onAssign: (id: string, personId: string | null) => void
 }) {
   const checkRef = useRef<HTMLSpanElement>(null)
 
@@ -30,7 +33,7 @@ export function TaskCard({
         y: (rect.top + rect.height / 2) / window.innerHeight,
       }
     }
-    if (!task.done) {
+    if (task.status !== 'done') {
       celebrate(origin)
     }
     onToggle(task.id)
@@ -55,22 +58,26 @@ export function TaskCard({
     >
       <span ref={checkRef} className="shrink-0">
         <Checkbox
-          checked={task.done}
+          checked={task.status === 'done'}
           onCheckedChange={handleToggle}
           aria-label={`«${task.title}» erledigt`}
           className="mt-0.5 size-6 rounded-md transition-look data-[state=checked]:animate-pop data-[state=checked]:bg-accent data-[state=checked]:text-accent-foreground"
         />
       </span>
       <span className="relative min-w-0 flex-1 break-words [overflow-wrap:anywhere] text-base leading-relaxed">
-        <span className={task.done ? 'text-muted-foreground' : undefined}>{task.title}</span>
+        <span className={task.status === 'done' ? 'text-muted-foreground' : undefined}>{task.title}</span>
         <motion.span
           aria-hidden
           className="absolute left-0 top-1/2 h-0.5 w-full origin-left bg-current"
           initial={false}
-          animate={{ scaleX: task.done ? 1 : 0 }}
+          animate={{ scaleX: task.status === 'done' ? 1 : 0 }}
           transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         />
       </span>
+      <PersonSelect
+        personId={task.personId}
+        onAssign={(personId) => onAssign(task.id, personId)}
+      />
       <Button
         variant="ghost"
         size="icon"

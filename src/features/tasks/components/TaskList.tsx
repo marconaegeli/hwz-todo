@@ -8,11 +8,13 @@ export function TaskList({
   onToggle,
   onRemove,
   onRestore,
+  onAssign = () => {},
 }: {
   tasks: Task[]
   onToggle: (id: string) => void
   onRemove: (task: Task) => void
   onRestore: () => void
+  onAssign?: (id: string, personId: string | null) => void
 }) {
   if (tasks.length === 0) {
     return <EmptyState />
@@ -28,6 +30,7 @@ export function TaskList({
             onToggle={onToggle}
             onRemove={onRemove}
             onRestore={onRestore}
+            onAssign={onAssign}
           />
         ))}
       </AnimatePresence>

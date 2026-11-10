@@ -50,3 +50,26 @@ Neon
    - Gegeben: Es sind keine Aufgaben da.
    - Wenn: Ich die App öffne.
    - Dann: Sie zeigt die Illustration des Looks und einen freundlichen Satz.
+
+## Features
+
+### F1: Zeile pro Person (Swimlanes)
+
+Jede Karte kann einer Person zugeordnet werden (Name, Initialen-Badge). Das Board zeigt eine Zeile pro Person plus «Niemand», jede Zeile mit den drei Spalten.
+
+1. Person zuordnen
+   - Gegeben: Eine Karte hat keine Person zugewiesen.
+   - Wenn: Ich eine Person auswähle.
+   - Dann: Die Karte zeigt deren Initialen-Badge und wandert in die Zeile dieser Person.
+2. Zeilenaufbau
+   - Gegeben: Es sind Karten mit verschiedenen Personen und ohne Person da.
+   - Wenn: Ich das Board ansehe.
+   - Dann: Sieht es je eine Zeile pro Person plus «Niemand» aus, jede mit den Spalten Offen, In Arbeit, Erledigt.
+3. Alt-Speicherstand
+   - Gegeben: Aufgaben aus der alten Version sind gespeichert.
+   - Wenn: Ich die neue Version öffne.
+   - Dann: Alle Aufgaben sind noch da, ohne Person zugewiesen, in der Zeile «Niemand».
+4. Drag and Drop
+   - Gegeben: Auf dem Board stehen Karten in verschiedenen Spalten und Zeilen.
+   - Wenn: Ich eine Karte per Maus oder Tastatur in eine andere Spalte oder Zeile ziehe.
+   - Dann: Sie landet am neuen Ort, die Zielspalte leuchtet beim Darüberziehen kurz auf, und in «Erledigt» erscheint Konfetti.

@@ -1,14 +1,15 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { TaskCard } from './TaskCard'
+import type { Task } from '../model'
 import { Toaster } from '@/components/ui/sonner'
 import { celebrate } from '@/lib/celebrate'
 
 vi.mock('@/lib/celebrate', () => ({ celebrate: vi.fn() }))
 
-const task = { id: '1', title: 'Einkaufen', done: false, createdAt: 0 }
+const task: Task = { id: '1', title: 'Einkaufen', status: 'todo', personId: null, createdAt: 0 }
 
-function renderCard(overrides: Partial<{ onToggle: (id: string) => void; onRemove: (t: typeof task) => void; onRestore: () => void }> = {}) {
+function renderCard(overrides: Partial<{ onToggle: (id: string) => void; onRemove: (t: typeof task) => void; onRestore: () => void; onAssign: (id: string, personId: string | null) => void }> = {}) {
   return render(
     <>
       <Toaster richColors position="bottom-center" />
@@ -17,6 +18,7 @@ function renderCard(overrides: Partial<{ onToggle: (id: string) => void; onRemov
         onToggle={overrides.onToggle ?? vi.fn()}
         onRemove={overrides.onRemove ?? vi.fn()}
         onRestore={overrides.onRestore ?? vi.fn()}
+        onAssign={overrides.onAssign ?? vi.fn()}
       />
     </>,
   )

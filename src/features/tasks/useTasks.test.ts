@@ -24,7 +24,7 @@ describe('useTasks', () => {
   })
 
   it('restores stored tasks on load', () => {
-    localStorage.setItem('hwz-todo', JSON.stringify({ version: 1, tasks: [{ id: 'x', title: 'Alt', done: false, createdAt: 1 }] }))
+    localStorage.setItem('hwz-todo', JSON.stringify({ version: 2, tasks: [{ id: 'x', title: 'Alt', status: 'todo', personId: null, createdAt: 1 }] }))
     const { result } = renderHook(() => useTasks())
     expect(result.current.tasks).toHaveLength(1)
     expect(result.current.tasks[0].title).toBe('Alt')
@@ -39,7 +39,7 @@ describe('useTasks', () => {
     act(() => {
       result.current.toggleTask(id)
     })
-    expect(result.current.tasks[0].done).toBe(true)
-    expect(loadState().tasks[0].done).toBe(true)
+    expect(result.current.tasks[0].status).toBe('done')
+    expect(loadState().tasks[0].status).toBe('done')
   })
 })

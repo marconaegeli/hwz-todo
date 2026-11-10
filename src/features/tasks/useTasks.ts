@@ -1,5 +1,15 @@
 import { useCallback, useEffect, useState } from 'react'
-import { addTask, insertTask, removeTask, toggleTask, type Task } from './model'
+import {
+  addTask,
+  assignPerson,
+  changeStatus,
+  insertTask,
+  moveTask,
+  removeTask,
+  toggleTask,
+  type Status,
+  type Task,
+} from './model'
 import { loadState, saveState } from '@/lib/storage'
 
 export function useTasks() {
@@ -17,6 +27,21 @@ export function useTasks() {
     setTasks((prev) => toggleTask(prev, id))
   }, [])
 
+  const changeStatusHandler = useCallback((id: string, status: Status) => {
+    setTasks((prev) => changeStatus(prev, id, status))
+  }, [])
+
+  const assignPersonHandler = useCallback((id: string, personId: string | null) => {
+    setTasks((prev) => assignPerson(prev, id, personId))
+  }, [])
+
+  const move = useCallback(
+    (id: string, toStatus: Status, toPersonId: string | null, toIndex: number) => {
+      setTasks((prev) => moveTask(prev, id, toStatus, toPersonId, toIndex))
+    },
+    [],
+  )
+
   const remove = useCallback((id: string) => {
     setTasks((prev) => removeTask(prev, id))
   }, [])
@@ -28,5 +53,14 @@ export function useTasks() {
     [],
   )
 
-  return { tasks, addTask: add, toggleTask: toggle, removeTask: remove, restoreTask: restore }
+  return {
+    tasks,
+    addTask: add,
+    toggleTask: toggle,
+    changeStatus: changeStatusHandler,
+    assignPerson: assignPersonHandler,
+    moveTask: move,
+    removeTask: remove,
+    restoreTask: restore,
+  }
 }

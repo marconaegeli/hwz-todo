@@ -14,4 +14,9 @@ describe('App', () => {
     expect(document.documentElement).toHaveAttribute('data-look', look)
     expect(screen.getByRole('heading', { level: 1 })).toBeVisible()
   })
+
+  it('shows the empty state when there are no tasks', () => {
+    render(<App />)
+    expect(screen.getByText('Alles erledigt. Zeit für Kaffee.')).toBeInTheDocument()
+  })
 })

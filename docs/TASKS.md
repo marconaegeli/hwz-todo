@@ -50,3 +50,33 @@ Format je Task:
 - Dateien: src/components/ProgressRing.tsx, src/components/ProgressRing.test.tsx, src/features/tasks/components/EmptyState.tsx, src/App.tsx.
 - Test zuerst: Ring hat aria-label «1 von 2 erledigt»; leere Liste zeigt «Alles erledigt. Zeit für Kaffee.».
 - Fertig wenn: DESIGN.md, Rezepte 1 und 5 erfüllt (SPEC «Leerer Zustand»), npm run check grün.
+
+[x] 7  Migration auf Version 2 (atomarer Modell-Umbau)
+- Ziel: Das Datenmodell wechselt von done auf status + personId. Gespeicherte Aufgaben der alten Version bleiben beim Öffnen erhalten und werden migriert. Die bestehende Liste funktioniert mit dem neuen Modell weiter (das Board folgt in späteren Tasks).
+- Dateien: src/lib/storage.ts, src/lib/storage.test.ts, src/features/tasks/model.ts, src/features/tasks/model.test.ts, src/features/tasks/useTasks.ts, src/features/tasks/useTasks.test.ts, src/features/tasks/components/TaskCard.tsx, src/features/tasks/components/TaskCard.test.tsx, src/features/tasks/components/TaskList.tsx, src/components/ProgressRing.tsx, src/components/ProgressRing.test.tsx, src/App.tsx.
+- Test zuerst: migrateV1toV2 wandelt done: true zu status 'done', done: false zu 'todo', und setzt personId null mit echten Daten im Format von Version 1; die bestehende Liste zeigt Aufgaben weiter an (SPEC «Neu laden»).
+- Fertig wenn: Migration hat eigenen Test (docs/STACK.md, «Datenhaltung»), gespeicherte Aufgaben bleiben erhalten (SPEC «Alt-Speicherstand»), Liste und Zähler funktionieren mit status weiter, npm run check grün.
+
+[x] 8  Modell: Status, Person und Verschieben
+- Ziel: Karten bekommen einen Status (Offen, In Arbeit, Erledigt), können einer Person zugeordnet werden und sich verschieben lassen; alles reine Funktionen.
+- Dateien: src/features/tasks/model.ts, src/features/tasks/model.test.ts, src/features/tasks/useTasks.ts.
+- Test zuerst: changeStatus setzt den Status; assignPerson setzt oder entfernt personId; moveTask verschiebt eine Karte in eine Spalte oder Person und setzt die Reihenfolge.
+- Fertig wenn: Status, Person und Verschieben funktionieren ohne Oberfläche (SPEC F1 «Person zuordnen»; DESIGN.md, Rezept 6 moveTask), npm run check grün.
+
+[x] 9  Swimlanes-Board
+- Ziel: Das Board zeigt eine Zeile pro Person plus «Niemand», jede mit den Spalten Offen, In Arbeit, Erledigt.
+- Dateien: src/features/tasks/components/Board.tsx, src/features/tasks/components/Board.test.tsx, src/App.tsx.
+- Test zuerst: Board zeigt Karten in der Zeile der zugeordneten Person und ohne Person in «Niemand».
+- Fertig wenn: drei Spalten je Zeile sichtbar (DESIGN.md, Rezept 6), Karten stehen in der richtigen Zeile (SPEC F1 «Zeilenaufbau»), npm run check grün.
+
+[x] 10  Person zuordnen
+- Ziel: Jede Karte hat ein Initialen-Badge; Klick wählt die Person, die Karte gleitet in deren Zeile.
+- Dateien: src/features/tasks/components/PersonSelect.tsx, src/features/tasks/components/PersonSelect.test.tsx, src/features/tasks/components/TaskCard.tsx, src/App.tsx.
+- Test zuerst: Klick auf das Badge wählt eine Person, die Karte zeigt deren Initialen und wechselt die Zeile.
+- Fertig wenn: DESIGN.md, Rezepte 3 und 8 erfüllt, Karte wechselt die Zeile (SPEC F1 «Person zuordnen»), npm run check grün.
+
+[x] 11  Drag and Drop im Board
+- Ziel: Karten lassen sich per Maus und Tastatur zwischen Spalten und Zeilen sowie innerhalb einer Spalte verschieben; die Zielspalte leuchtet beim Darüberziehen.
+- Dateien: src/features/tasks/components/Board.tsx, src/features/tasks/components/Board.test.tsx, src/features/tasks/components/TaskCard.tsx, src/App.tsx.
+- Test zuerst: moveTask (schon rot aus Task 8 oder hier ergänzt) verschiebt eine Karte in eine andere Spalte oder Person; jsdom-Test prüft soweit möglich die Maus-Steuerung.
+- Fertig wenn: DESIGN.md, Rezept 6 erfüllt (dnd-kit, Zielspalte leuchtet, Konfetti in «Erledigt», Tastatur mit deutschen Ansagen), npm run check grün.
